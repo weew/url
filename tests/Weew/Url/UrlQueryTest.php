@@ -8,22 +8,22 @@ use Weew\Url\UrlQuery;
 class UrlQueryTest extends PHPUnit_Framework_TestCase {
     public function test_create_query() {
         $query = new UrlQuery();
-        $this->assertEquals([], $query->getAll());
+        $this->assertEquals([], $query->toArray());
         $this->assertEquals('', $query->toString());
 
         $query = new UrlQuery(['foo' => 'bar']);
-        $this->assertEquals(['foo' => 'bar'], $query->getAll());
+        $this->assertEquals(['foo' => 'bar'], $query->toArray());
         $this->assertEquals('foo=bar', $query->toString());
 
         $query = new UrlQuery('foo=bar');
-        $this->assertEquals(['foo' => 'bar'], $query->getAll());
+        $this->assertEquals(['foo' => 'bar'], $query->toArray());
         $this->assertEquals('foo=bar', $query->toString());
     }
 
     public function test_getters_and_setters() {
         $query = new UrlQuery(['foo' => 'bar']);
         $this->assertEquals(
-            ['foo' => 'bar'], $query->getAll()
+            ['foo' => 'bar'], $query->toArray()
         );
         $this->assertEquals('bar', $query->get('foo'));
         $query->set('foo', 'yolo');
@@ -54,7 +54,7 @@ class UrlQueryTest extends PHPUnit_Framework_TestCase {
         $query = new UrlQuery(['foo' => 'bar']);
         $query->extend(['bar' => 'foo']);
         $this->assertEquals(
-            ['foo' => 'bar', 'bar' => 'foo'], $query->getAll()
+            ['foo' => 'bar', 'bar' => 'foo'], $query->toArray()
         );
     }
 }

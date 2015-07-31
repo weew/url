@@ -23,13 +23,6 @@ class UrlQuery implements IUrlQuery {
     }
 
     /**
-     * @return array
-     */
-    public function getAll() {
-        return $this->query;
-    }
-
-    /**
      * @param string $key
      * @param null $default
      *
@@ -82,5 +75,12 @@ class UrlQuery implements IUrlQuery {
      */
     public function extend(array $data) {
         $this->query = array_extend($this->query, $data);
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray() {
+        return $this->query;
     }
 }

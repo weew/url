@@ -2,12 +2,9 @@
 
 namespace Weew\Url;
 
-interface IUrlQuery {
-    /**
-     * @return array
-     */
-    function getAll();
+use Weew\Foundation\Interfaces\IArrayable;
 
+interface IUrlQuery extends IArrayable {
     /**
      * @param string $key
      * @param null $default

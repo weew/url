@@ -6,141 +6,141 @@ class UrlBuilder implements IUrlBuilder {
     /**
      * @var string
      */
-    protected $urlScheme = ':scheme:credentials:host:port:path:query:fragment';
+    protected $pattern = ':scheme:credentials:host:port:path:query:fragment';
 
     /**
-     * @param IUrlSegments $segments
+     * @param IUrl $url
      *
      * @return string
      */
-    public function build(IUrlSegments $segments) {
-        $url = $this->urlScheme;
-        $url = $this->setScheme($url, $segments);
-        $url = $this->setUser($url, $segments);
-        $url = $this->setHost($url, $segments);
-        $url = $this->setPort($url, $segments);
-        $url = $this->setPath($url, $segments);
-        $url = $this->setQuery($url, $segments);
-        $url = $this->setFragment($url, $segments);
+    public function build(IUrl $url) {
+        $pattern = $this->pattern;
+        $pattern = $this->setScheme($pattern, $url);
+        $pattern = $this->setUser($pattern, $url);
+        $pattern = $this->setHost($pattern, $url);
+        $pattern = $this->setPort($pattern, $url);
+        $pattern = $this->setPath($pattern, $url);
+        $pattern = $this->setQuery($pattern, $url);
+        $pattern = $this->setFragment($pattern, $url);
 
-        return $url;
+        return $pattern;
     }
 
     /**
-     * @param string $url
-     * @param IUrlSegments $segments
+     * @param string $pattern
+     * @param IUrl $url
      * @param string $key
      *
      * @return string
      */
-    public function setScheme($url, IUrlSegments $segments, $key = ':scheme') {
-        $scheme = $segments->getScheme();
+    public function setScheme($pattern, IUrl $url, $key = ':scheme') {
+        $scheme = $url->getScheme();
 
         if ($scheme) {
             $scheme = s('%s://', $scheme);
         }
 
-        $url = s($url, [$key => $scheme]);
+        $pattern = s($pattern, [$key => $scheme]);
 
-        return $url;
+        return $pattern;
     }
 
     /**
-     * @param string $url
-     * @param IUrlSegments $segments
+     * @param string $pattern
+     * @param IUrl $url
      * @param string $key
      *
      * @return string
      */
-    public function setUser($url, IUrlSegments $segments, $key = ':credentials') {
-        $user = $segments->getUser();
-        $password = $segments->getPassword();
+    public function setUser($pattern, IUrl $url, $key = ':credentials') {
+        $user = $url->getUser();
+        $password = $url->getPassword();
         $credentials = '';
 
         if ($user and $password) {
             $credentials = s('%s:%s@', $user, $password);
         }
 
-        $url = s($url, [$key => $credentials]);
+        $pattern = s($pattern, [$key => $credentials]);
 
-        return $url;
+        return $pattern;
     }
 
     /**
-     * @param string $url
-     * @param IUrlSegments $segments
+     * @param string $pattern
+     * @param IUrl $url
      * @param string $key
      *
      * @return string
      */
-    public function setHost($url, IUrlSegments $segments, $key = ':host') {
-        $host = $segments->getHost();
-        $url = s($url, [$key => $host]);
+    public function setHost($pattern, IUrl $url, $key = ':host') {
+        $host = $url->getHost();
+        $pattern = s($pattern, [$key => $host]);
 
-        return $url;
+        return $pattern;
     }
 
     /**
-     * @param string $url
-     * @param IUrlSegments $segments
+     * @param string $pattern
+     * @param IUrl $url
      * @param string $key
      *
      * @return string
      */
-    public function setPort($url, IUrlSegments $segments, $key = ':port') {
-        $port = $segments->getPort();
+    public function setPort($pattern, IUrl $url, $key = ':port') {
+        $port = $url->getPort();
 
         if ($port) {
             $port = s(':%s', $port);
         }
 
-        $url = s($url, [$key => $port]);
+        $pattern = s($pattern, [$key => $port]);
 
-        return $url;
+        return $pattern;
     }
 
     /**
-     * @param string $url
-     * @param IUrlSegments $segments
+     * @param string $pattern
+     * @param IUrl $url
      * @param string $key
      *
      * @return string
      */
-    public function setPath($url, IUrlSegments $segments, $key = ':path') {
-        $path = $segments->getPath();
-        $url = s($url, [$key => $path]);
+    public function setPath($pattern, IUrl $url, $key = ':path') {
+        $path = $url->getPath();
+        $pattern = s($pattern, [$key => $path]);
 
-        return $url;
+        return $pattern;
     }
 
-    public function setQuery($url, IUrlSegments $segments, $key = ':query') {
-        $query = $segments->getQuery()->toString();
+    public function setQuery($pattern, IUrl $url, $key = ':query') {
+        $query = $url->getQuery()->toString();
 
         if ($query) {
             $query = s('?%s', $query);
         }
 
-        $url = s($url, [$key => $query]);
+        $pattern = s($pattern, [$key => $query]);
 
-        return $url;
+        return $pattern;
     }
 
     /**
-     * @param string $url
-     * @param IUrlSegments $segments
+     * @param string $pattern
+     * @param IUrl $url
      * @param string $key
      *
      * @return string
      */
-    public function setFragment($url, IUrlSegments $segments, $key = ':fragment') {
-        $fragment = $segments->getFragment();
+    public function setFragment($pattern, IUrl $url, $key = ':fragment') {
+        $fragment = $url->getFragment();
 
         if ($fragment) {
             $fragment = s('#%s', $fragment);
         }
 
-        $url = s($url, [$key => $fragment]);
+        $pattern = s($pattern, [$key => $fragment]);
 
-        return $url;
+        return $pattern;
     }
 }

@@ -2,8 +2,8 @@
 
 namespace Tests\Weew\Url;
 
+use Weew\Url\Url;
 use Weew\Url\UrlBuilder;
-use Weew\Url\UrlParser;
 use PHPUnit_Framework_TestCase;
 
 class UrlBuilderTest extends PHPUnit_Framework_TestCase {
@@ -11,8 +11,7 @@ class UrlBuilderTest extends PHPUnit_Framework_TestCase {
 
     public function test_build_url() {
         $builder = new UrlBuilder();
-        $parser = new UrlParser();
-        $url = $builder->build($parser->parse($this->url));
+        $url = $builder->build(new Url($this->url));
 
         $this->assertEquals($this->url, $url);
     }

@@ -4,9 +4,9 @@ namespace Weew\Url;
 
 interface IUrlBuilder {
     /**
-     * @param IUrlSegments $segments
+     * @param IUrl $url
      *
      * @return string
      */
-    function build(IUrlSegments $segments);
+    function build(IUrl $url);
 }

@@ -21,9 +21,9 @@ class UrlQueryTest extends PHPUnit_Framework_TestCase {
     }
 
     public function test_getters_and_setters() {
-        $query = new UrlQuery(['foo' => 'bar']);
+        $query = new UrlQuery(['foo' => 'bar', 'baz' => 'bar']);
         $this->assertEquals(
-            ['foo' => 'bar'], $query->toArray()
+            ['foo' => 'bar', 'baz' => 'bar'], $query->toArray()
         );
         $this->assertEquals('bar', $query->get('foo'));
         $query->set('foo', 'yolo');
@@ -31,6 +31,8 @@ class UrlQueryTest extends PHPUnit_Framework_TestCase {
         $query->remove('foo');
         $this->assertNull($query->get('foo'));
         $this->assertEquals('bar', $query->get('foo', 'bar'));
+        $this->assertFalse($query->has('yolo'));
+        $this->assertTrue($query->has('baz'));
     }
 
     public function test_count() {

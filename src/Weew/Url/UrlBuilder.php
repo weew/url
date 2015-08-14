@@ -57,7 +57,7 @@ class UrlBuilder implements IUrlBuilder {
         $password = $url->getPassword();
         $credentials = '';
 
-        if ($user and $password) {
+        if ($user && $password) {
             $credentials = s('%s:%s@', $user, $password);
         }
 

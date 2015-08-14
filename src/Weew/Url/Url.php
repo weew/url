@@ -68,6 +68,11 @@ class Url implements IUrl {
      */
     public function parse($url) {
         $parts = parse_url($url);
+
+        if ($parts === false) {
+            $parts = [];
+        }
+
         $this->setFragment(array_get($parts, 'fragment'));
         $this->setHost(array_get($parts, 'host'));
         $this->setPassword(array_get($parts, 'pass'));
@@ -218,7 +223,7 @@ class Url implements IUrl {
      * @return string
      */
     protected function addLeadingSlash($segment) {
-        if ($segment and substr($segment, 0, 1) != '/') {
+        if ($segment && substr($segment, 0, 1) != '/') {
             $segment = s('/%s', $segment);
         }
 

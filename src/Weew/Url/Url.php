@@ -69,10 +69,6 @@ class Url implements IUrl {
     public function parse($url) {
         $parts = parse_url($url);
 
-        if ($parts === false) {
-            $parts = [];
-        }
-
         $this->setFragment(array_get($parts, 'fragment'));
         $this->setHost(array_get($parts, 'host'));
         $this->setPassword(array_get($parts, 'pass'));

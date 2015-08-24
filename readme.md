@@ -9,7 +9,7 @@
 
 `composer require weew/php-url`
 
-#### Working URL segments
+#### Working with URL segments
 
 Let's work with this particular URL:
 

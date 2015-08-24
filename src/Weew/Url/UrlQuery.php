@@ -71,6 +71,13 @@ class UrlQuery implements IUrlQuery {
     }
 
     /**
+     * @return string
+     */
+    public function __toString() {
+        return $this->toString();
+    }
+
+    /**
      * @param array $data
      */
     public function extend(array $data) {

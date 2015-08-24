@@ -50,6 +50,9 @@ class UrlQueryTest extends PHPUnit_Framework_TestCase {
             http_build_query(['foo' => 'bar']),
             $query->toString()
         );
+        $this->assertEquals(
+            (string) $query, $query->toString()
+        );
     }
 
     public function test_extend() {

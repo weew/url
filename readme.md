@@ -9,7 +9,7 @@
 
 `composer require weew/php-url`
 
-#### Working with URL segments
+## Working with URL segments
 
 Let's work with this particular URL:
 
@@ -17,7 +17,9 @@ Let's work with this particular URL:
 $url = new Url('http://username:password@subdomain.domain.com:80/some/path?query=value#fragment');
 ```
 
-It is very easy to access isolated parts of an URL.
+#### Read segments
+
+It is very easy to access isolated segments of an URL.
 
 ```php
 echo $url->getProtocol();
@@ -54,7 +56,9 @@ echo $url->getPassword();
 // password
 ```
 
-The same works in the other direction too.
+#### Manipulate segments
+
+You can also modify URL segments the same way.
 
 ```php
 $url->setProtocol('https');

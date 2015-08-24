@@ -58,7 +58,7 @@ echo $url->getPassword();
 
 #### Manipulate segments
 
-You can also modify URL segments the same way.
+You can modify URL segments in the same manner.
 
 ```php
 $url->setProtocol('https');

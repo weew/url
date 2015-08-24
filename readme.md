@@ -43,7 +43,7 @@ echo $url->getPort();
 echo $url->getPath();
 // /some/path
 
-echo $url->getQuery()->toString();
+echo $url->getQuery();
 // query=value
 
 echo $url->getFragment();

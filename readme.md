@@ -5,7 +5,7 @@
 [![Coverage Status](https://coveralls.io/repos/weew/php-url/badge.svg?branch=master&service=github)](https://coveralls.io/github/weew/php-url?branch=master)
 [![License](https://poser.pugx.org/weew/php-url/license)](https://packagist.org/packages/weew/php-url)
 
-#### Installation
+## Installation
 
 `composer require weew/php-url`
 

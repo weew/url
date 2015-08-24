@@ -17,7 +17,7 @@ Let's work with this particular URL:
 $url = new Url('http://username:password@subdomain.domain.com:80/some/path?query=value#fragment');
 ```
 
-#### Read segments
+#### Access segments
 
 It is very easy to access isolated segments of an URL.
 

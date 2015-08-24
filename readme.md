@@ -17,7 +17,7 @@ Let's work with this particular URL:
 $url = new Url('http://username:password@subdomain.domain.com:80/some/path?query=value#fragment');
 ```
 
-#### Access segments
+#### Accessing segments
 
 It is very easy to access isolated segments of an URL.
 
@@ -56,7 +56,7 @@ echo $url->getPassword();
 // password
 ```
 
-#### Manipulate segments
+#### Manipulating segments
 
 You can modify URL segments in the same manner.
 

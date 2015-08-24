@@ -2,23 +2,19 @@
 
 namespace Weew\Url;
 
+use Weew\Foundation\Interfaces\IArrayable;
 use Weew\Foundation\Interfaces\IStringable;
 
-interface IUrl extends IStringable {
-    /**
-     * @param string $url
-     */
-    function parse($url);
-
+interface IUrl extends IStringable, IArrayable {
     /**
      * @return string
      */
-    function getScheme();
+    function getProtocol();
 
     /**
-     * @param $scheme
+     * @param $protocol
      */
-    function setScheme($scheme);
+    function setProtocol($protocol);
 
     /**
      * @return string
@@ -29,6 +25,36 @@ interface IUrl extends IStringable {
      * @param $host
      */
     function setHost($host);
+
+    /**
+     * @return string
+     */
+    function getTLD();
+
+    /**
+     * @param $tld
+     */
+    function setTLD($tld);
+
+    /**
+     * @return string
+     */
+    function getDomain();
+
+    /**
+     * @param $domain
+     */
+    function setDomain($domain);
+
+    /**
+     * @return string
+     */
+    function getSubdomain();
+
+    /**
+     * @param $subdomain
+     */
+    function setSubdomain($subdomain);
 
     /**
      * @return int
@@ -43,12 +69,12 @@ interface IUrl extends IStringable {
     /**
      * @return string
      */
-    function getUser();
+    function getUsername();
 
     /**
      * @param $user
      */
-    function setUser($user);
+    function setUsername($user);
 
     /**
      * @return string

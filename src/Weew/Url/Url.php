@@ -16,12 +16,22 @@ class Url implements IUrl {
     /**
      * @var string
      */
-    protected $scheme;
+    protected $protocol;
 
     /**
      * @var string
      */
-    protected $host;
+    protected $tld;
+
+    /**
+     * @var string
+     */
+    protected $domain;
+
+    /**
+     * @var string
+     */
+    protected $subdomain;
 
     /**
      * @var string
@@ -31,7 +41,7 @@ class Url implements IUrl {
     /**
      * @var string
      */
-    protected $user;
+    protected $username;
 
     /**
      * @var string
@@ -57,54 +67,103 @@ class Url implements IUrl {
      * @param string ...$url
      */
     public function __construct($url = '') {
-       $url = implode('/', func_get_args());
-
         $this->builder = $this->createBuilder();
-        $this->parse($url);
+        $this->parser = $this->createParser();
+
+        $this->parse(implode('/', func_get_args()));
     }
 
     /**
      * @param string $url
      */
-    public function parse($url) {
-        $parts = parse_url($url);
+    protected function parse($url) {
+        $parts = $this->parser->parse($url);
 
-        $this->setFragment(array_get($parts, 'fragment'));
-        $this->setHost(array_get($parts, 'host'));
-        $this->setPassword(array_get($parts, 'pass'));
+        $this->setProtocol(array_get($parts, 'protocol'));
+        $this->setTLD(array_get($parts, 'tld'));
+        $this->setDomain(array_get($parts, 'domain'));
+        $this->setSubdomain(array_get($parts, 'subdomain'));
         $this->setPath(array_get($parts, 'path'));
         $this->setPort(array_get($parts, 'port'));
-        $this->setScheme(array_get($parts, 'scheme'));
-        $this->setUser(array_get($parts, 'user'));
+        $this->setUsername(array_get($parts, 'username'));
+        $this->setPassword(array_get($parts, 'password'));
         $this->setQuery(new UrlQuery(array_get($parts, 'query')));
+        $this->setFragment(array_get($parts, 'fragment'));
     }
 
     /**
      * @return string
      */
-    public function getScheme() {
-        return $this->scheme;
+    public function getProtocol() {
+        return $this->protocol;
     }
 
     /**
-     * @param string $scheme
+     * @param string $protocol
      */
-    public function setScheme($scheme) {
-        $this->scheme = $scheme;
+    public function setProtocol($protocol) {
+        $this->protocol = $protocol;
     }
 
     /**
      * @return string
      */
     public function getHost() {
-        return $this->host;
+        return $this->builder->buildHost(
+            $this->getTLD(), $this->getDomain(), $this->getSubdomain()
+        );
     }
 
     /**
-     * @param string $host
+     * @param $host
      */
     public function setHost($host) {
-        $this->host = $host;
+        $parts = $this->parser->parseHost($host);
+        $this->setTLD(array_get($parts, 'tld'));
+        $this->setDomain(array_get($parts, 'domain'));
+        $this->setSubdomain(array_get($parts, 'subdomain'));
+    }
+
+    /**
+     * @return string
+     */
+    public function getTLD() {
+        return $this->tld;
+    }
+
+    /**
+     * @param $tld
+     */
+    public function setTLD($tld) {
+        $this->tld = $tld;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDomain() {
+        return $this->domain;
+    }
+
+    /**
+     * @param $domain
+     */
+    public function setDomain($domain) {
+        $this->domain = $domain;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSubdomain() {
+        return $this->subdomain;
+    }
+
+    /**
+     * @param $subdomain
+     */
+    public function setSubdomain($subdomain) {
+        $this->subdomain = $subdomain;
     }
 
     /**
@@ -124,15 +183,15 @@ class Url implements IUrl {
     /**
      * @return string
      */
-    public function getUser() {
-        return $this->user;
+    public function getUsername() {
+        return $this->username;
     }
 
     /**
-     * @param string $user
+     * @param string $username
      */
-    public function setUser($user) {
-        $this->user = $user;
+    public function setUsername($username) {
+        $this->username = $username;
     }
 
     /**
@@ -214,6 +273,25 @@ class Url implements IUrl {
     }
 
     /**
+     * @return array
+     */
+    public function toArray() {
+        return [
+            'protocol' => $this->getProtocol(),
+            'tld' => $this->getTLD(),
+            'domain' => $this->getDomain(),
+            'subdomain' => $this->getSubdomain(),
+            'host' => $this->getHost(),
+            'port' => $this->getPort(),
+            'path' => $this->getPath(),
+            'query' => $this->getQuery()->toArray(),
+            'username' => $this->getUsername(),
+            'password' => $this->getPassword(),
+            'fragment' => $this->getFragment(),
+        ];
+    }
+
+    /**
      * @param $segment
      *
      * @return string
@@ -230,22 +308,22 @@ class Url implements IUrl {
      * @return string
      */
     protected function buildUrl() {
-        $url = $this->getUrlBuilder()->build($this);
+        $url = $this->builder->build($this);
 
         return $url;
     }
 
     /**
-     * return IUrlBuilder
-     */
-    protected function getUrlBuilder() {
-        return $this->builder;
-    }
-
-    /**
-     * @return UrlBuilder
+     * @return IUrlBuilder
      */
     protected function createBuilder() {
         return new UrlBuilder();
+    }
+
+    /**
+     * @return IUrlParser
+     */
+    protected function createParser() {
+        return new UrlParser();
     }
 }

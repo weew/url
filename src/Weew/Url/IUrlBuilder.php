@@ -9,4 +9,13 @@ interface IUrlBuilder {
      * @return string
      */
     function build(IUrl $url);
+
+    /**
+     * @param $tld
+     * @param $domain
+     * @param $subdomain
+     *
+     * @return string
+     */
+    function buildHost($tld, $domain, $subdomain);
 }

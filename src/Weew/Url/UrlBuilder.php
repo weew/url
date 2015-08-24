@@ -15,7 +15,7 @@ class UrlBuilder implements IUrlBuilder {
      */
     public function build(IUrl $url) {
         $pattern = $this->pattern;
-        $pattern = $this->setScheme($pattern, $url);
+        $pattern = $this->setProtocol($pattern, $url);
         $pattern = $this->setUser($pattern, $url);
         $pattern = $this->setHost($pattern, $url);
         $pattern = $this->setPort($pattern, $url);
@@ -27,14 +27,41 @@ class UrlBuilder implements IUrlBuilder {
     }
 
     /**
+     * @param $tld
+     * @param $domain
+     * @param $subdomain
+     *
+     * @return string
+     */
+    public function buildHost($tld, $domain, $subdomain) {
+        $parts = [];
+
+        if ($tld !== null) {
+            array_unshift($parts, $tld);
+        }
+
+        if ($domain !== null) {
+            array_unshift($parts, $domain);
+        }
+
+        if ($subdomain !== null) {
+            array_unshift($parts, $subdomain);
+        }
+
+        $host = implode('.', $parts);
+
+        return $host;
+    }
+
+    /**
      * @param string $pattern
      * @param IUrl $url
      * @param string $key
      *
      * @return string
      */
-    public function setScheme($pattern, IUrl $url, $key = ':scheme') {
-        $scheme = $url->getScheme();
+    protected function setProtocol($pattern, IUrl $url, $key = ':scheme') {
+        $scheme = $url->getProtocol();
 
         if ($scheme) {
             $scheme = s('%s://', $scheme);
@@ -52,8 +79,8 @@ class UrlBuilder implements IUrlBuilder {
      *
      * @return string
      */
-    public function setUser($pattern, IUrl $url, $key = ':credentials') {
-        $user = $url->getUser();
+    protected function setUser($pattern, IUrl $url, $key = ':credentials') {
+        $user = $url->getUsername();
         $password = $url->getPassword();
         $credentials = '';
 
@@ -73,7 +100,7 @@ class UrlBuilder implements IUrlBuilder {
      *
      * @return string
      */
-    public function setHost($pattern, IUrl $url, $key = ':host') {
+    protected function setHost($pattern, IUrl $url, $key = ':host') {
         $host = $url->getHost();
         $pattern = s($pattern, [$key => $host]);
 
@@ -87,7 +114,7 @@ class UrlBuilder implements IUrlBuilder {
      *
      * @return string
      */
-    public function setPort($pattern, IUrl $url, $key = ':port') {
+    protected function setPort($pattern, IUrl $url, $key = ':port') {
         $port = $url->getPort();
 
         if ($port) {
@@ -106,14 +133,14 @@ class UrlBuilder implements IUrlBuilder {
      *
      * @return string
      */
-    public function setPath($pattern, IUrl $url, $key = ':path') {
+    protected function setPath($pattern, IUrl $url, $key = ':path') {
         $path = $url->getPath();
         $pattern = s($pattern, [$key => $path]);
 
         return $pattern;
     }
 
-    public function setQuery($pattern, IUrl $url, $key = ':query') {
+    protected function setQuery($pattern, IUrl $url, $key = ':query') {
         $query = $url->getQuery()->toString();
 
         if ($query) {
@@ -132,7 +159,7 @@ class UrlBuilder implements IUrlBuilder {
      *
      * @return string
      */
-    public function setFragment($pattern, IUrl $url, $key = ':fragment') {
+    protected function setFragment($pattern, IUrl $url, $key = ':fragment') {
         $fragment = $url->getFragment();
 
         if ($fragment) {

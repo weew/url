@@ -5,21 +5,44 @@
 [![Coverage Status](https://coveralls.io/repos/weew/php-url/badge.svg?branch=master&service=github)](https://coveralls.io/github/weew/php-url?branch=master)
 [![License](https://poser.pugx.org/weew/php-url/license)](https://packagist.org/packages/weew/php-url)
 
+## Table of contents
+
+- [Installation](#installation)
+- [Overview](#overview)
+- [Instantiation](#instantiation)
+- [Parsing](#parsing)
+- [Building](#building)
+- [Additional methods](#additional-methods)
+
 ## Installation
 
 `composer require weew/php-url`
 
-## Working with URL segments
+## Overview
 
-Let's work with this particular URL:
+Currently this library is able to parse and build urls of such format and complexity:
+
+```php
+// protocol://username:password@subdomain.domain.tld:port/path?key=value
+```
+
+For example:
+
+```php
+// https://john:doe@another.domain.net:8080/my/path?query=value&some=value#hashtag
+```
+
+## Instantiation
+
+Creating a new url is very easy:
 
 ```php
 $url = new Url('http://username:password@subdomain.domain.com:80/some/path?query=value#fragment');
 ```
 
-#### Accessing segments
+## Parsing
 
-It is very easy to access isolated segments of an URL.
+Url containts manny segments which can be accessed trough convenient methods:
 
 ```php
 echo $url->getProtocol();
@@ -56,9 +79,9 @@ echo $url->getPassword();
 // password
 ```
 
-#### Manipulating segments
+## Building
 
-You can modify URL segments in the same manner.
+You can modify url segments in the same manner.
 
 ```php
 $url->setProtocol('https');
@@ -78,4 +101,13 @@ $url->setPassword('doe');
 
 echo $url;
 // https://john:doe@another.domain.net:8080/my/path?query=value&some=value#hashtag
+```
+
+## Additional methods
+
+Converting url to an array:
+
+```php
+$url->toArray();
+
 ```

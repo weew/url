@@ -23,7 +23,7 @@
 Currently this library is able to parse and build urls of such format and complexity:
 
 ```php
-// protocol://username:password@subdomain.domain.tld:port/path?key=value
+// protocol://username:password@subdomain.domain.tld:port/path?key=value#fragment
 ```
 
 For example:

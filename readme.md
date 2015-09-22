@@ -94,13 +94,14 @@ $url->setTLD('net');
 
 $url->setPort(8080);
 $url->setPath('my/path');
+$url->addPath('here');
 $url->getQuery()->set('some', 'value');
 $url->setFragment('hashtag');
 $url->setUsername('john');
 $url->setPassword('doe');
 
 echo $url;
-// https://john:doe@another.domain.net:8080/my/path?query=value&some=value#hashtag
+// https://john:doe@another.domain.net:8080/my/path/here?query=value&some=value#hashtag
 ```
 
 ## Additional methods
@@ -109,5 +110,4 @@ Converting url to an array:
 
 ```php
 $url->toArray();
-
 ```

@@ -50,4 +50,45 @@ class UrlParserTest extends PHPUnit_Framework_TestCase {
             $parser->parse('http://name:pass@just.an.example.com:80/products?sku=1234#price')
         );
     }
+
+    public function test_parse_host_removes_empty_strings() {
+        $parser = new UrlParser();
+        $this->assertEquals([
+            'domain' => null,
+            'subdomain' => null,
+            'tld' => null,
+        ], $parser->parseHost(''));
+    }
+
+    public function test_parse_malformed() {
+        $parser = new UrlParser();
+        $this->assertEquals([
+            'protocol' => null,
+            'username' => null,
+            'password' => null,
+            'tld' => null,
+            'domain' => null,
+            'subdomain' => null,
+            'port' => null,
+            'path' => null,
+            'query' => null,
+            'fragment' => null,
+        ], $parser->parse('https://'));
+    }
+
+    public function test_parse_empty() {
+        $parser = new UrlParser();
+        $this->assertEquals([
+            'protocol' => null,
+            'username' => null,
+            'password' => null,
+            'tld' => null,
+            'domain' => null,
+            'subdomain' => null,
+            'port' => null,
+            'path' => null,
+            'query' => null,
+            'fragment' => null,
+        ], $parser->parse(''));
+    }
 }

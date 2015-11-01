@@ -1,9 +1,11 @@
 # URL wrapper
 
-[![Build Status](https://travis-ci.org/weew/php-url.svg?branch=master)](https://travis-ci.org/weew/php-url)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/weew/php-url/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/weew/php-url/?branch=master)
-[![Coverage Status](https://coveralls.io/repos/weew/php-url/badge.svg?branch=master&service=github)](https://coveralls.io/github/weew/php-url?branch=master)
-[![License](https://poser.pugx.org/weew/php-url/license)](https://packagist.org/packages/weew/php-url)
+[![Build Status](https://img.shields.io/travis/weew/php-url.svg)](https://travis-ci.org/weew/php-url)
+[![Code Quality](https://img.shields.io/scrutinizer/g/weew/php-url.svg)](https://scrutinizer-ci.com/g/weew/php-url)
+[![Test Coverage](https://img.shields.io/coveralls/weew/php-url.svg)](https://coveralls.io/github/weew/php-url)
+[![Dependencies](https://img.shields.io/versioneye/d/php/weew:php-url.svg)](https://versioneye.com/php/weew:php-url)
+[![Version](https://img.shields.io/packagist/v/weew/php-url.svg)](https://packagist.org/packages/weew/php-url)
+[![Licence](https://img.shields.io/packagist/l/weew/php-url.svg)](https://packagist.org/packages/weew/php-url)
 
 ## Table of contents
 

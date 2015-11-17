@@ -2,8 +2,8 @@
 
 namespace Weew\Url;
 
-use Weew\Foundation\Interfaces\IArrayable;
-use Weew\Foundation\Interfaces\IStringable;
+use Weew\Contracts\IArrayable;
+use Weew\Contracts\IStringable;
 
 interface IUrl extends IStringable, IArrayable {
     /**

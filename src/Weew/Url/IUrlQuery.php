@@ -2,7 +2,7 @@
 
 namespace Weew\Url;
 
-use Weew\Foundation\Interfaces\IArrayable;
+use Weew\Contracts\IArrayable;
 
 interface IUrlQuery extends IArrayable {
     /**

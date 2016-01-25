@@ -2,6 +2,9 @@
 
 namespace Weew\Url;
 
+use Weew\Collections\IDictionary;
+use Weew\UrlMatcher\UrlMatcher;
+
 class Url implements IUrl {
     /**
      * @var IUrlParser
@@ -228,6 +231,28 @@ class Url implements IUrl {
     public function addPath($path) {
         $path = $this->addLeadingSlash($path);
         $this->setPath($this->getPath() . $path);
+    }
+
+    /**
+     * @param $pattern
+     * @param array $patterns
+     *
+     * @return bool
+     */
+    public function matchPath($pattern, array $patterns = []) {
+        return (new UrlMatcher())
+                ->match($this->addLeadingSlash($pattern), $this->getPath(), $patterns);
+    }
+
+    /**
+     * @param $pattern
+     * @param array $patterns
+     *
+     * @return IDictionary
+     */
+    public function parsePath($pattern, array $patterns = []) {
+        return (new UrlMatcher())
+            ->parse($pattern, $this->getPath(), $patterns);
     }
 
     /**

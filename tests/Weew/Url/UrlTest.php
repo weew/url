@@ -172,4 +172,38 @@ class UrlTest extends PHPUnit_Framework_TestCase {
             $url->toArray()
         );
     }
+
+    public function test_match_path() {
+        $url = new Url('foo/bar');
+        $this->assertTrue($url->matchPath('foo/{name}'));
+        $this->assertFalse($url->matchPath('foo'));
+        $this->assertTrue($url->matchPath('foo/{name}/{alias?}'));
+        $this->assertFalse($url->matchPath('foo/{name}/{alias}'));
+
+        $this->assertTrue($url->matchPath('foo/{id}', ['id' => '[a-z]+']));
+        $this->assertFalse($url->matchPath('foo/{id}', ['id' => '[0-9]+']));
+    }
+
+    public function test_parse_path() {
+        $url = new Url('foo/bar');
+        $dict = $url->parsePath('foo/{name}');
+        $this->assertEquals('bar', $dict->get('name'));
+
+        $dict = $url->parsePath('foo');
+        $this->assertNull($dict->get('name'));
+
+        $dict = $url->parsePath('foo/{name}/{alias?}');
+        $this->assertEquals('bar', $dict->get('name'));
+        $this->assertNull($dict->get('alias'));
+
+        $dict = $url->parsePath('foo/{name}/{alias}');
+        $this->assertNull($dict->get('name'));
+        $this->assertNull($dict->get('alias'));
+
+        $dict = $url->parsePath('foo/{id}', ['id' => '[a-z]+']);
+        $this->assertEquals('bar', $dict->get('id'));
+
+        $dict = $url->parsePath('foo/{id}', ['id' => '[0-9]+']);
+        $this->assertNull($dict->get('id'));
+    }
 }

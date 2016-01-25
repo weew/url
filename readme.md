@@ -106,10 +106,59 @@ echo $url;
 // https://john:doe@another.domain.net:8080/my/path/here?query=value&some=value#hashtag
 ```
 
-## Additional methods
+## Path matching
 
-Converting url to an array:
+You can match url path against a pattern.
 
 ```php
-$url->toArray();
+$url = new Url('users/1');
+// true
+$url->matchPath('users/{id}');
+
+$url = new Url('users');
+// false
+$url->matchPath('users/{id}');
 ```
+
+Placeholders can be optional by adding the `?` sign at the end.
+
+```php
+$url = new Url('users/1');
+// true
+$url->matchPath('users/{id?}');
+
+$url = new Url('users');
+// true
+$url->matchPath('users/{id?}');
+```
+
+Placeholders can have custom patterns.
+
+```php
+$url = new Url('users/1');
+// true
+$url->matchPath('users/{id}', [
+    'id' => '[0-9]+',
+]);
+
+$url = new Url('users/abc');
+// false
+$url->matchPath('users/{id}', [
+    'id' => '[0-9]+',
+]);
+```
+
+For further documentation check out the [weew/php-url-matcher](https://github.com/weew/php-url-matcher) package;
+
+## Path parsing
+
+Retrieving placeholder values is very trivial.
+
+```php
+$url = new Url('users/1');
+$dictionary = $url->parsePath('users/{id}');
+// 1
+$dictionary->get('id');
+```
+
+For further documentation check out the [weew/php-url-matcher](https://github.com/weew/php-url-matcher) package;

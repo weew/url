@@ -2,6 +2,7 @@
 
 namespace Weew\Url;
 
+use Weew\Collections\IDictionary;
 use Weew\Contracts\IArrayable;
 use Weew\Contracts\IStringable;
 
@@ -100,6 +101,22 @@ interface IUrl extends IStringable, IArrayable {
      * @param $path
      */
     function addPath($path);
+
+    /**
+     * @param $pattern
+     * @param array $patterns
+     *
+     * @return true
+     */
+    function matchPath($pattern, array $patterns = []);
+
+    /**
+     * @param $pattern
+     * @param array $patterns
+     *
+     * @return IDictionary
+     */
+    function parsePath($pattern, array $patterns = []);
 
     /**
      * @return IUrlQuery

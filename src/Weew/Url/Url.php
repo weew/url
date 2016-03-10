@@ -256,6 +256,19 @@ class Url implements IUrl {
     }
 
     /**
+     * @param array $values
+     */
+    public function buildPath(array $values) {
+        $path = $this->getPath();
+
+        foreach ($values as $key => $value) {
+            $path = str_replace(s('{%s}', $key), $value, $path);
+        }
+
+        $this->setPath($path);
+    }
+
+    /**
      * @return IUrlQuery
      */
     public function getQuery() {

@@ -14,7 +14,9 @@
 - [Instantiation](#instantiation)
 - [Parsing](#parsing)
 - [Building](#building)
-- [Additional methods](#additional-methods)
+- [Path matching](#path-matching)
+- [Path parsing](#path-parsing)
+- [Path building](#path-building)
 
 ## Installation
 
@@ -162,3 +164,15 @@ $dictionary->get('id');
 ```
 
 For further documentation check out the [weew/php-url-matcher](https://github.com/weew/php-url-matcher) package;
+
+## Path building
+
+You can replace placeholders inside your path with values.
+
+```php
+$url = new Url('users/{id}/profile');
+$url->buildPath(['id' => 123]);
+
+// /users/123/profile
+$url->getPath();
+```

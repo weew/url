@@ -206,4 +206,10 @@ class UrlTest extends PHPUnit_Framework_TestCase {
         $dict = $url->parsePath('foo/{id}', ['id' => '[0-9]+']);
         $this->assertNull($dict->get('id'));
     }
+
+    public function test_build_path() {
+        $url = new Url('/foo/{bar}/{baz}/yolo');
+        $url->buildPath(['bar' => '1', 'baz' => '2']);
+        $this->assertEquals('/foo/1/2/yolo', $url->getPath());
+    }
 }

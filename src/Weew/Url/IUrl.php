@@ -119,6 +119,11 @@ interface IUrl extends IStringable, IArrayable {
     function parsePath($pattern, array $patterns = []);
 
     /**
+     * @param array $values
+     */
+    function buildPath(array $values);
+
+    /**
      * @return IUrlQuery
      */
     function getQuery();

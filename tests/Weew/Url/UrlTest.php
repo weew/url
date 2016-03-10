@@ -212,4 +212,16 @@ class UrlTest extends PHPUnit_Framework_TestCase {
         $url->buildPath(['bar' => '1', 'baz' => '2']);
         $this->assertEquals('/foo/1/2/yolo', $url->getPath());
     }
+
+    public function test_set_path_replaces_placeholders() {
+        $url = new Url();
+        $url->setPath('/foo/{bar}/{baz}/yolo', ['bar' => '1', 'baz' => '2']);
+        $this->assertEquals('/foo/1/2/yolo', $url->getPath());
+    }
+
+    public function test_add_path_replaces_placeholders() {
+        $url = new Url('/{foo}/bar');
+        $url->addPath('{baz}/yolo', ['foo' => 1, 'baz' => 2]);
+        $this->assertEquals('/{foo}/bar/2/yolo', $url->getPath());
+    }
 }

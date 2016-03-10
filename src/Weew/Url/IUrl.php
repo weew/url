@@ -94,13 +94,17 @@ interface IUrl extends IStringable, IArrayable {
 
     /**
      * @param $path
+     * @param array $placeholders
+     *
+     * @return
      */
-    function setPath($path);
+    function setPath($path, array $placeholders = []);
 
     /**
      * @param $path
+     * @param array $placeholders
      */
-    function addPath($path);
+    function addPath($path, array $placeholders = []);
 
     /**
      * @param $pattern

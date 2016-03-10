@@ -220,17 +220,23 @@ class Url implements IUrl {
 
     /**
      * @param string $path
+     * @param array $placeholders
      */
-    public function setPath($path) {
-        $this->path = $this->addLeadingSlash($path);
+    public function setPath($path, array $placeholders = []) {
+        $path = $this->addLeadingSlash($path);
+        $path = $this->replacePlaceholdersInString($path, $placeholders);
+        $this->path = $path;
     }
 
     /**
      * @param $path
+     * @param array $placeholders
      */
-    public function addPath($path) {
+    public function addPath($path, array $placeholders = []) {
         $path = $this->addLeadingSlash($path);
-        $this->setPath($this->getPath() . $path);
+        $path = $this->replacePlaceholdersInString($path, $placeholders);
+        $path = $this->getPath() . $path;
+        $this->setPath($path);
     }
 
     /**
@@ -259,13 +265,9 @@ class Url implements IUrl {
      * @param array $values
      */
     public function buildPath(array $values) {
-        $path = $this->getPath();
-
-        foreach ($values as $key => $value) {
-            $path = str_replace(s('{%s}', $key), $value, $path);
-        }
-
-        $this->setPath($path);
+        $this->setPath(
+            $this->replacePlaceholdersInString($this->getPath(), $values)
+        );
     }
 
     /**
@@ -363,5 +365,19 @@ class Url implements IUrl {
      */
     protected function createParser() {
         return new UrlParser();
+    }
+
+    /**
+     * @param string $string
+     * @param array $values
+     *
+     * @return string
+     */
+    protected function replacePlaceholdersInString($string, array $values) {
+        foreach ($values as $key => $value) {
+            $string = str_replace(s('{%s}', $key), $value, $string);
+        }
+
+        return $string;
     }
 }

@@ -67,7 +67,7 @@ class UrlQuery implements IUrlQuery {
      * @return string
      */
     public function toString() {
-        return http_build_query($this->query);
+        return urldecode(http_build_query($this->query));
     }
 
     /**

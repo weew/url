@@ -328,6 +328,7 @@ class Url implements IUrl {
             'username' => $this->getUsername(),
             'password' => $this->getPassword(),
             'fragment' => $this->getFragment(),
+            'full' => $this->toString(),
         ];
     }
 

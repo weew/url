@@ -168,6 +168,7 @@ class UrlTest extends PHPUnit_Framework_TestCase {
                 'username' => $url->getUsername(),
                 'password' => $url->getPassword(),
                 'fragment' => $url->getFragment(),
+                'full' => 'http://name:pass@just.an.example.com:80/products?sku=1234#price',
             ],
             $url->toArray()
         );

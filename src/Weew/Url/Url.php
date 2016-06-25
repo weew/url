@@ -3,6 +3,7 @@
 namespace Weew\Url;
 
 use Weew\Collections\IDictionary;
+use Weew\UrlMatcher\IUrlMatcher;
 use Weew\UrlMatcher\UrlMatcher;
 
 class Url implements IUrl {
@@ -10,6 +11,11 @@ class Url implements IUrl {
      * @var IUrlParser
      */
     protected $parser;
+
+    /**
+     * @var IUrlMatcher
+     */
+    protected $matcher;
 
     /**
      * @var IUrlBuilder
@@ -72,26 +78,9 @@ class Url implements IUrl {
     public function __construct($url = '') {
         $this->builder = $this->createBuilder();
         $this->parser = $this->createParser();
+        $this->matcher = $this->createMatcher();
 
-        $this->parse(implode('/', func_get_args()));
-    }
-
-    /**
-     * @param string $url
-     */
-    protected function parse($url) {
-        $parts = $this->parser->parse($url);
-
-        $this->setProtocol(array_get($parts, 'protocol'));
-        $this->setTLD(array_get($parts, 'tld'));
-        $this->setDomain(array_get($parts, 'domain'));
-        $this->setSubdomain(array_get($parts, 'subdomain'));
-        $this->setPath(array_get($parts, 'path'));
-        $this->setPort(array_get($parts, 'port'));
-        $this->setUsername(array_get($parts, 'username'));
-        $this->setPassword(array_get($parts, 'password'));
-        $this->setQuery(new UrlQuery(array_get($parts, 'query')));
-        $this->setFragment(array_get($parts, 'fragment'));
+        $this->build(implode('/', func_get_args()));
     }
 
     /**
@@ -118,7 +107,7 @@ class Url implements IUrl {
     }
 
     /**
-     * @param $host
+     * @param string $host
      */
     public function setHost($host) {
         $parts = $this->parser->parseHost($host);
@@ -135,7 +124,7 @@ class Url implements IUrl {
     }
 
     /**
-     * @param $tld
+     * @param string $tld
      */
     public function setTLD($tld) {
         $this->tld = $tld;
@@ -149,7 +138,7 @@ class Url implements IUrl {
     }
 
     /**
-     * @param $domain
+     * @param string $domain
      */
     public function setDomain($domain) {
         $this->domain = $domain;
@@ -163,7 +152,7 @@ class Url implements IUrl {
     }
 
     /**
-     * @param $subdomain
+     * @param string $subdomain
      */
     public function setSubdomain($subdomain) {
         $this->subdomain = $subdomain;
@@ -220,54 +209,65 @@ class Url implements IUrl {
 
     /**
      * @param string $path
-     * @param array $placeholders
      */
-    public function setPath($path, array $placeholders = []) {
-        $path = $this->addLeadingSlash($path);
-        $path = $this->replacePlaceholdersInString($path, $placeholders);
-        $this->path = $path;
+    public function setPath($path) {
+        $this->path = $this->addLeadingSlash($path);
     }
 
     /**
-     * @param $path
-     * @param array $placeholders
+     * @param string $path
      */
-    public function addPath($path, array $placeholders = []) {
-        $path = $this->addLeadingSlash($path);
-        $path = $this->replacePlaceholdersInString($path, $placeholders);
-        $path = $this->getPath() . $path;
-        $this->setPath($path);
+    public function addPath($path) {
+        $this->setPath(
+            $this->getPath() . $this->addLeadingSlash($path)
+        );
     }
 
     /**
-     * @param $pattern
+     * @param string $pattern
      * @param array $patterns
      *
      * @return bool
      */
-    public function matchPath($pattern, array $patterns = []) {
-        return (new UrlMatcher())
-                ->match($this->addLeadingSlash($pattern), $this->getPath(), $patterns);
+    public function match($pattern, array $patterns = []) {
+        return $this->matcher->match(
+            $this->addLeadingSlash($pattern), $this->getPath(), $patterns
+        );
     }
 
     /**
-     * @param $pattern
+     * @param string $pattern
      * @param array $patterns
      *
      * @return IDictionary
      */
-    public function parsePath($pattern, array $patterns = []) {
-        return (new UrlMatcher())
-            ->parse($pattern, $this->getPath(), $patterns);
+    public function parse($pattern, array $patterns = []) {
+        return $this->matcher->parse(
+            $pattern, $this->getPath(), $patterns
+        );
     }
 
     /**
-     * @param array $values
+     * @param string $key
+     * @param string $value
      */
-    public function buildPath(array $values) {
-        $this->setPath(
-            $this->replacePlaceholdersInString($this->getPath(), $values)
+    public function replace($key, $value) {
+        $url = $this->matcher->replace(
+            $this->toString(), $key, $value
         );
+
+        $this->build($url);
+    }
+
+    /**
+     * @param array $replacements
+     */
+    public function replaceAll(array $replacements) {
+        $url = $this->matcher->replaceAll(
+            $this->toString(), $replacements
+        );
+
+        $this->build($url);
     }
 
     /**
@@ -333,6 +333,24 @@ class Url implements IUrl {
     }
 
     /**
+     * @param string $url
+     */
+    protected function build($url) {
+        $parts = $this->parser->parse($url);
+
+        $this->setProtocol(array_get($parts, 'protocol'));
+        $this->setTLD(array_get($parts, 'tld'));
+        $this->setDomain(array_get($parts, 'domain'));
+        $this->setSubdomain(array_get($parts, 'subdomain'));
+        $this->setPath(array_get($parts, 'path'));
+        $this->setPort(array_get($parts, 'port'));
+        $this->setUsername(array_get($parts, 'username'));
+        $this->setPassword(array_get($parts, 'password'));
+        $this->setQuery(new UrlQuery(array_get($parts, 'query')));
+        $this->setFragment(array_get($parts, 'fragment'));
+    }
+
+    /**
      * @param $segment
      *
      * @return string
@@ -369,16 +387,9 @@ class Url implements IUrl {
     }
 
     /**
-     * @param string $string
-     * @param array $values
-     *
-     * @return string
+     * @return IUrlMatcher
      */
-    protected function replacePlaceholdersInString($string, array $values) {
-        foreach ($values as $key => $value) {
-            $string = str_replace(s('{%s}', $key), $value, $string);
-        }
-
-        return $string;
+    protected function createMatcher() {
+        return new UrlMatcher();
     }
 }

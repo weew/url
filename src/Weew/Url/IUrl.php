@@ -13,7 +13,7 @@ interface IUrl extends IStringable, IArrayable {
     function getProtocol();
 
     /**
-     * @param $protocol
+     * @param string $protocol
      */
     function setProtocol($protocol);
 
@@ -23,7 +23,7 @@ interface IUrl extends IStringable, IArrayable {
     function getHost();
 
     /**
-     * @param $host
+     * @param string $host
      */
     function setHost($host);
 
@@ -33,7 +33,7 @@ interface IUrl extends IStringable, IArrayable {
     function getTLD();
 
     /**
-     * @param $tld
+     * @param string $tld
      */
     function setTLD($tld);
 
@@ -43,7 +43,7 @@ interface IUrl extends IStringable, IArrayable {
     function getDomain();
 
     /**
-     * @param $domain
+     * @param string $domain
      */
     function setDomain($domain);
 
@@ -53,7 +53,7 @@ interface IUrl extends IStringable, IArrayable {
     function getSubdomain();
 
     /**
-     * @param $subdomain
+     * @param string $subdomain
      */
     function setSubdomain($subdomain);
 
@@ -63,7 +63,7 @@ interface IUrl extends IStringable, IArrayable {
     function getPort();
 
     /**
-     * @param $port
+     * @param int $port
      */
     function setPort($port);
 
@@ -73,7 +73,7 @@ interface IUrl extends IStringable, IArrayable {
     function getUsername();
 
     /**
-     * @param $user
+     * @param string $user
      */
     function setUsername($user);
 
@@ -83,7 +83,7 @@ interface IUrl extends IStringable, IArrayable {
     function getPassword();
 
     /**
-     * @param $password
+     * @param string $password
      */
     function setPassword($password);
 
@@ -93,39 +93,41 @@ interface IUrl extends IStringable, IArrayable {
     function getPath();
 
     /**
-     * @param $path
-     * @param array $placeholders
-     *
-     * @return
+     * @param string $path
      */
-    function setPath($path, array $placeholders = []);
+    function setPath($path);
 
     /**
-     * @param $path
-     * @param array $placeholders
+     * @param string $path
      */
-    function addPath($path, array $placeholders = []);
+    function addPath($path);
 
     /**
-     * @param $pattern
+     * @param string $pattern
      * @param array $patterns
      *
      * @return true
      */
-    function matchPath($pattern, array $patterns = []);
+    function match($pattern, array $patterns = []);
 
     /**
-     * @param $pattern
+     * @param string $pattern
      * @param array $patterns
      *
      * @return IDictionary
      */
-    function parsePath($pattern, array $patterns = []);
+    function parse($pattern, array $patterns = []);
 
     /**
-     * @param array $values
+     * @param string $placeholder
+     * @param string $value
      */
-    function buildPath(array $values);
+    function replace($placeholder, $value);
+
+    /**
+     * @param array $replacements
+     */
+    function replaceAll(array $replacements);
 
     /**
      * @return IUrlQuery
@@ -143,7 +145,7 @@ interface IUrl extends IStringable, IArrayable {
     function getFragment();
 
     /**
-     * @param $fragment
+     * @param string $fragment
      */
     function setFragment($fragment);
 

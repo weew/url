@@ -1,11 +1,11 @@
 # URL wrapper
 
-[![Build Status](https://img.shields.io/travis/weew/php-url.svg)](https://travis-ci.org/weew/php-url)
-[![Code Quality](https://img.shields.io/scrutinizer/g/weew/php-url.svg)](https://scrutinizer-ci.com/g/weew/php-url)
-[![Test Coverage](https://img.shields.io/coveralls/weew/php-url.svg)](https://coveralls.io/github/weew/php-url)
-[![Dependencies](https://img.shields.io/versioneye/d/php/weew:php-url.svg)](https://versioneye.com/php/weew:php-url)
-[![Version](https://img.shields.io/packagist/v/weew/php-url.svg)](https://packagist.org/packages/weew/php-url)
-[![Licence](https://img.shields.io/packagist/l/weew/php-url.svg)](https://packagist.org/packages/weew/php-url)
+[![Build Status](https://img.shields.io/travis/weew/url.svg)](https://travis-ci.org/weew/url)
+[![Code Quality](https://img.shields.io/scrutinizer/g/weew/url.svg)](https://scrutinizer-ci.com/g/weew/url)
+[![Test Coverage](https://img.shields.io/coveralls/weew/url.svg)](https://coveralls.io/github/weew/url)
+[![Dependencies](https://img.shields.io/versioneye/d/php/weew:url.svg)](https://versioneye.com/php/weew:url)
+[![Version](https://img.shields.io/packagist/v/weew/url.svg)](https://packagist.org/packages/weew/url)
+[![Licence](https://img.shields.io/packagist/l/weew/url.svg)](https://packagist.org/packages/weew/url)
 
 ## Table of contents
 
@@ -20,7 +20,7 @@
 
 ## Installation
 
-`composer require weew/php-url`
+`composer require weew/url`
 
 ## Overview
 
@@ -150,7 +150,7 @@ $url->matchPath('users/{id}', [
 ]);
 ```
 
-For further documentation check out the [weew/php-url-matcher](https://github.com/weew/php-url-matcher) package;
+For further documentation check out the [weew/url-matcher](https://github.com/weew/url-matcher) package;
 
 ## Path parsing
 
@@ -163,7 +163,7 @@ $dictionary = $url->parsePath('users/{id}');
 $dictionary->get('id');
 ```
 
-For further documentation check out the [weew/php-url-matcher](https://github.com/weew/php-url-matcher) package;
+For further documentation check out the [weew/url-matcher](https://github.com/weew/url-matcher) package;
 
 ## Path building
 

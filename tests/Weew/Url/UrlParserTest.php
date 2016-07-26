@@ -39,13 +39,14 @@ class UrlParserTest extends PHPUnit_Framework_TestCase {
                 'protocol' => 'http',
                 'username' => 'name',
                 'password' => 'pass',
-                'tld' => 'com',
-                'domain' => 'example',
                 'subdomain' => 'just.an',
-                'port' => 80,
+                'domain' => 'example',
+                'tld' => 'com',
+                'port' => '80',
                 'path' => '/products',
                 'query' => 'sku=1234',
                 'fragment' => 'price',
+                'host' => 'just.an.example.com',
             ],
             $parser->parse('http://name:pass@just.an.example.com:80/products?sku=1234#price')
         );
@@ -63,16 +64,17 @@ class UrlParserTest extends PHPUnit_Framework_TestCase {
     public function test_parse_malformed() {
         $parser = new UrlParser();
         $this->assertEquals([
-            'protocol' => null,
+            'protocol' => 'https',
             'username' => null,
             'password' => null,
-            'tld' => null,
-            'domain' => null,
             'subdomain' => null,
+            'domain' => null,
+            'tld' => null,
             'port' => null,
             'path' => null,
             'query' => null,
             'fragment' => null,
+            'host' => null,
         ], $parser->parse('https://'));
     }
 
@@ -82,13 +84,14 @@ class UrlParserTest extends PHPUnit_Framework_TestCase {
             'protocol' => null,
             'username' => null,
             'password' => null,
-            'tld' => null,
-            'domain' => null,
             'subdomain' => null,
+            'domain' => null,
+            'tld' => null,
             'port' => null,
             'path' => null,
             'query' => null,
             'fragment' => null,
+            'host' => null,
         ], $parser->parse(''));
     }
 }

@@ -209,15 +209,27 @@ class UrlTest extends PHPUnit_Framework_TestCase {
     }
 
     public function test_replace_all() {
-        $url = new Url('/foo/{bar}/{baz}/yolo');
-        $url->replaceAll(['bar' => '1', 'baz' => '2']);
-        $this->assertEquals('/foo/1/2/yolo', $url->getPath());
+        $url = new Url('{foo}.service.com/foo/{bar}/{baz}/yolo');
+        $url->replaceAll(['foo' => 'api', 'bar' => '1', 'baz' => '2']);
+        $this->assertEquals('api.service.com/foo/1/2/yolo', $url->toString());
     }
 
     public function test_replace() {
-        $url = new Url('/foo/{bar}/{baz}/yolo');
+        $url = new Url('{foo}.service.com/foo/{bar}/{baz}/yolo');
+        $url->replace('foo', 'api');
         $url->replace('bar', '1');
         $url->replace('baz', '2');
-        $this->assertEquals('/foo/1/2/yolo', $url->getPath());
+        $this->assertEquals('api.service.com/foo/1/2/yolo', $url->toString());
+    }
+
+    public function test_sample() {
+        $url = new Url('{subdomain}.service.com/users/{id}/profile');
+        $url->replace('subdomain', 'api');
+        $url->replace('id', 1);
+        $this->assertEquals('api.service.com/users/1/profile', $url->toString());
+
+        $url = new Url('{subdomain}.service.com/users/{id}/profile');
+        $url->replaceAll(['subdomain' => 'api', 'id' => 1]);
+        $this->assertEquals('api.service.com/users/1/profile', $url->toString());
     }
 }

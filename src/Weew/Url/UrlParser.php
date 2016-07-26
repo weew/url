@@ -4,49 +4,30 @@ namespace Weew\Url;
 
 class UrlParser implements IUrlParser {
     /**
-     * @param $url
+     * @param $string
      *
      * @return array
      */
-    public function parse($url) {
-        $template = [
-            'protocol' => null,
-            'username' => null,
-            'password' => null,
-            'port' => null,
-            'path' => null,
-            'query' => null,
-            'fragment' => null,
-        ];
+    public function parse($string) {
+        $segments = $this->parseSegments($string);
+        $segments = array_extend($segments, $this->parseHost(array_get($segments, 'host')));
 
-        $parts = parse_url($url);
-
-        if ( ! is_array($parts)) {
-            $parts = parse_url('');
-        }
-
-        $parts['protocol'] = array_get($parts, 'scheme');
-        $parts['username'] = array_get($parts, 'user');
-        $parts['password'] = array_get($parts, 'pass');
-        $parts = array_extend($template, $parts, $this->parseHost(array_get($parts, 'host')));
-        array_remove($parts, ['scheme', 'host', 'user', 'pass']);
-
-        return $this->replaceEmptyStringsWithNull($parts);
+        return $this->replaceEmptyStringsWithNull($segments);
     }
 
     /**
-     * @param $host
+     * @param $string
      *
      * @return array
      */
-    public function parseHost($host) {
+    public function parseHost($string) {
         $segments = [
             'tld' => null,
             'domain' => null,
             'subdomain' => null,
         ];
 
-        $parts = explode('.', $host);
+        $parts = explode('.', $string);
 
         if (count($parts) == 1) {
             $segments['domain'] = $parts[0];
@@ -67,6 +48,47 @@ class UrlParser implements IUrlParser {
         }
 
         return $this->replaceEmptyStringsWithNull($segments);
+    }
+
+    /**
+     * @param $string
+     *
+     * @return array
+     */
+    protected function parseSegments($string) {
+        preg_match_all(
+            '/^' .
+            '((?P<protocol>.*):\/\/)?' .
+            '(' .
+                '(?P<username>.*?)' .
+                '(:(?P<password>.*?)' .
+            ')@)?' .
+            '(?P<host>[^:\/\s]+)?' .
+            '(:(?P<port>[^\/]*))?' .
+            '(?P<path>[^#\?]*)?' .
+            '(\?(?P<query>[^#]*))?' .
+            '(#(?P<fragment>.*))?' .
+            '$/',
+            $string,
+            $segments
+        );
+
+        foreach ($segments as $key => $value) {
+            if (is_numeric($key)) {
+                unset($segments[$key]);
+            } else {
+                $segments[$key] = array_pop($value);
+            }
+        }
+
+        $host = array_get($segments, 'host');
+
+        if ($host && $host !== 'localhost' && stripos($host, '.') === false) {
+            $segments['path'] = '/' . $host . array_get($segments, 'path');
+            $segments['host'] = null;
+        }
+
+        return $segments;
     }
 
     /**

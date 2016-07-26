@@ -4,16 +4,16 @@ namespace Weew\Url;
 
 interface IUrlParser {
     /**
-     * @param $url
+     * @param $string
      *
      * @return array
      */
-    function parse($url);
+    function parse($string);
 
     /**
-     * @param $host
+     * @param $string
      *
      * @return array
      */
-    function parseHost($host);
+    function parseHost($string);
 }

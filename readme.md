@@ -14,9 +14,9 @@
 - [Instantiation](#instantiation)
 - [Parsing](#parsing)
 - [Building](#building)
-- [Path matching](#path-matching)
-- [Path parsing](#path-parsing)
-- [Path building](#path-building)
+- [Matching](#matching)
+- [Parsing](#parsing)
+- [Replacing](#building)
 
 ## Installation
 
@@ -108,18 +108,18 @@ echo $url;
 // https://john:doe@another.domain.net:8080/my/path/here?query=value&some=value#hashtag
 ```
 
-## Path matching
+## Matching
 
 You can match url path against a pattern.
 
 ```php
 $url = new Url('users/1');
 // true
-$url->matchPath('users/{id}');
+$url->match('users/{id}');
 
 $url = new Url('users');
 // false
-$url->matchPath('users/{id}');
+$url->match('users/{id}');
 ```
 
 Placeholders can be optional by adding the `?` sign at the end.
@@ -127,11 +127,11 @@ Placeholders can be optional by adding the `?` sign at the end.
 ```php
 $url = new Url('users/1');
 // true
-$url->matchPath('users/{id?}');
+$url->match('users/{id?}');
 
 $url = new Url('users');
 // true
-$url->matchPath('users/{id?}');
+$url->match('users/{id?}');
 ```
 
 Placeholders can have custom patterns.
@@ -139,40 +139,44 @@ Placeholders can have custom patterns.
 ```php
 $url = new Url('users/1');
 // true
-$url->matchPath('users/{id}', [
+$url->match('users/{id}', [
     'id' => '[0-9]+',
 ]);
 
 $url = new Url('users/abc');
 // false
-$url->matchPath('users/{id}', [
+$url->match('users/{id}', [
     'id' => '[0-9]+',
 ]);
 ```
 
 For further documentation check out the [weew/url-matcher](https://github.com/weew/url-matcher) package;
 
-## Path parsing
+## Parsing
 
 Retrieving placeholder values is very trivial.
 
 ```php
 $url = new Url('users/1');
-$dictionary = $url->parsePath('users/{id}');
+$dictionary = $url->parse('users/{id}');
 // 1
 $dictionary->get('id');
 ```
 
 For further documentation check out the [weew/url-matcher](https://github.com/weew/url-matcher) package;
 
-## Path building
+## Replacing
 
 You can replace placeholders inside your path with values.
 
 ```php
-$url = new Url('users/{id}/profile');
-$url->buildPath(['id' => 123]);
+$url = new Url('{subdomain}.service.com/users/{id}/profile');
+$url->replace('subdomain', 'api');
+$url->replace('id', 1);
 
-// /users/123/profile
-$url->getPath();
+// or 
+$url->replaceAll(['subdomain' => 'api', 'id' => 1]);
+
+// api.service.com/users/1/profile
+$url->toString();
 ```

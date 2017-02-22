@@ -45,10 +45,15 @@ class UrlQueryTest extends PHPUnit_Framework_TestCase {
     public function test_get_url_encoded() {
         $query = new UrlQuery();
         $this->assertEquals('', $query->toString());
-        $query->set('foo', 'bar');
+        $query->set('foo+bar', 'yolo swag @');
+        $query->set(0, ['yolo']);
         $this->assertEquals(
-            http_build_query(['foo' => 'bar']),
+            'foo+bar=yolo swag @&0[0]=yolo',
             $query->toString()
+        );
+        $this->assertEquals(
+            'foo%2Bbar=yolo%20swag%20%40&0%5B0%5D=yolo',
+            $query->toString(true)
         );
         $this->assertEquals(
             (string) $query, $query->toString()

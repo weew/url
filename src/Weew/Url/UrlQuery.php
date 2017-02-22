@@ -12,14 +12,7 @@ class UrlQuery implements IUrlQuery {
      * @param mixed $query
      */
     public function __construct($query = []) {
-        if (is_string($query)) {
-            $queryString = $query;
-            parse_str($queryString, $query);
-        }
-
-        if (is_array($query)) {
-            $this->query = $query;
-        }
+        $this->query = $this->parseQuery($query);
     }
 
     /**
@@ -64,10 +57,18 @@ class UrlQuery implements IUrlQuery {
     }
 
     /**
+     * @param bool $encode
+     *
      * @return string
      */
-    public function toString() {
-        return urldecode(http_build_query($this->query));
+    public function toString($encode = false) {
+        $query = http_build_query($this->query, '', '&', PHP_QUERY_RFC3986);
+
+        if ( ! $encode) {
+            return rawurldecode($query);
+        }
+
+        return $query;
     }
 
     /**
@@ -89,5 +90,23 @@ class UrlQuery implements IUrlQuery {
      */
     public function toArray() {
         return $this->query;
+    }
+
+    /**
+     * @param string|array $query
+     *
+     * @return array
+     */
+    private function parseQuery($query) {
+        if (is_array($query)) {
+            return $query;
+        }
+
+        // "+" sign is reserved and must always be encoded,
+        // otherwise it is interpreted as a space
+        $queryString = str_replace('+', '%2B', $query);
+        parse_str($queryString, $query);
+
+        return $query;
     }
 }

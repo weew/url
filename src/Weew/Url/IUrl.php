@@ -150,7 +150,9 @@ interface IUrl extends IStringable, IArrayable {
     function setFragment($fragment);
 
     /**
+     * @param bool $encode
+     *
      * @return string
      */
-    function toString();
+    function toString($encode = false);
 }

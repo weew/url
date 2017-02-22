@@ -8,7 +8,8 @@ use Weew\Url\Url;
 use Weew\Url\UrlQuery;
 
 class UrlTest extends PHPUnit_Framework_TestCase {
-    private $url = 'http://name:pass@just.an.example.com:80/products?sku=1234#price';
+    private $url = 'http://name:pass@just.an.example.com:80/products?sku=12+34#price';
+    private $encodedUrl = 'http://name:pass@just.an.example.com:80/products?sku=12%2B34#price';
 
     public function test_get_and_set_segments() {
         $url = new Url();
@@ -60,8 +61,9 @@ class UrlTest extends PHPUnit_Framework_TestCase {
 
     public function test_to_string() {
         $url = new Url($this->url);
-        $this->assertEquals($url, $url->toString());
-        $this->assertEquals($url, (string) $url);
+        $this->assertEquals($this->url, $url->toString());
+        $this->assertEquals($this->encodedUrl, $url->toString(true));
+        $this->assertEquals($this->url, (string) $url);
     }
 
     public function test_create_url() {
@@ -149,7 +151,7 @@ class UrlTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals('just.an', $url->getSubdomain());
         $this->assertEquals('80', $url->getPort());
         $this->assertEquals('/products', $url->getPath());
-        $this->assertEquals('sku=1234', $url->getQuery()->toString());
+        $this->assertEquals('sku=12+34', $url->getQuery()->toString(false));
         $this->assertEquals('price', $url->getFragment());
     }
 
@@ -168,7 +170,7 @@ class UrlTest extends PHPUnit_Framework_TestCase {
                 'username' => $url->getUsername(),
                 'password' => $url->getPassword(),
                 'fragment' => $url->getFragment(),
-                'full' => 'http://name:pass@just.an.example.com:80/products?sku=1234#price',
+                'full' => $this->url,
             ],
             $url->toArray()
         );

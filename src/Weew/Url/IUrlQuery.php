@@ -3,8 +3,9 @@
 namespace Weew\Url;
 
 use Weew\Contracts\IArrayable;
+use Weew\Contracts\IStringable;
 
-interface IUrlQuery extends IArrayable {
+interface IUrlQuery extends IArrayable, IStringable {
     /**
      * @param string $key
      * @param null $default
@@ -37,12 +38,14 @@ interface IUrlQuery extends IArrayable {
     function count();
 
     /**
-     * @return string
-     */
-    function toString();
-
-    /**
      * @param array $data
      */
     function extend(array $data);
+
+    /**
+     * @param bool $encode
+     *
+     * @return string
+     */
+    function toString($encode = false);
 }

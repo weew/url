@@ -299,10 +299,12 @@ class Url implements IUrl {
     }
 
     /**
+     * @param bool $encode
+     *
      * @return string
      */
-    public function toString() {
-        return $this->buildUrl();
+    public function toString($encode = false) {
+        return $this->buildUrl($encode);
     }
 
     /**
@@ -364,12 +366,12 @@ class Url implements IUrl {
     }
 
     /**
+     * @param bool $encode
+     *
      * @return string
      */
-    protected function buildUrl() {
-        $url = $this->builder->build($this);
-
-        return $url;
+    protected function buildUrl($encode = false) {
+        return $this->builder->build($this, $encode);
     }
 
     /**

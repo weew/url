@@ -8,8 +8,8 @@ use Weew\Url\Url;
 use Weew\Url\UrlQuery;
 
 class UrlTest extends PHPUnit_Framework_TestCase {
-    private $url = 'http://name:pass@just.an.example.com:80/products?sku=12+34#price';
-    private $encodedUrl = 'http://name:pass@just.an.example.com:80/products?sku=12%2B34#price';
+    private $url = 'http://name:pass@just.an.example.com:80/products?sku=12+34 5#price';
+    private $encodedUrl = 'http://name:pass@just.an.example.com:80/products?sku=12%2B34%205#price';
 
     public function test_get_and_set_segments() {
         $url = new Url();
@@ -151,7 +151,7 @@ class UrlTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals('just.an', $url->getSubdomain());
         $this->assertEquals('80', $url->getPort());
         $this->assertEquals('/products', $url->getPath());
-        $this->assertEquals('sku=12+34', $url->getQuery()->toString(false));
+        $this->assertEquals('sku=12+34 5', $url->getQuery()->toString(false));
         $this->assertEquals('price', $url->getFragment());
     }
 

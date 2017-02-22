@@ -64,7 +64,7 @@ class UrlParser implements IUrlParser {
                 '(:(?P<password>.*?)' .
             ')@)?' .
             '(?P<host>[^:\/\s]+)?' .
-            '(:(?P<port>[^\/]*))?' .
+            '(:(?P<port>\d*))?' .
             '(?P<path>[^#\?]*)?' .
             '(\?(?P<query>[^#]*))?' .
             '(#(?P<fragment>.*))?' .
